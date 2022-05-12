@@ -10,3 +10,5 @@ Examples:
 Hostname: castle - OS: Linux 5.15.0-27-generic/x86_64 - Distro: Ubuntu 22.04 LTS - CPU: 16 x AMD Ryzen 7 5800X 8-Core (2200 MHz) - Processes: 461 - Uptime: 6d 3h 27m - Users: 3 - Load Average: 0.56 - Memory Usage: 19517/32012 MB (61%) - Disk Usage: 787/932 GB (85%)
 
 Hostname: flapper - OS: Linux 5.10.103+/armv6l - Distro: Raspbian 10 (Buster) - CPU: ARMv6 rev 7 (v6l) (700 MHz) - Processes: 78 - Uptime: 1h 8m - Users: 0 - Load Average: 0.13 - Memory Usage: 66/367 MB (18%) - Disk Usage: 2/7 GB (33%)
+
+Hostname: almaplex - OS: Linux 4.18.0-348.23.1.el8_5.x86_64/x86_64 - Distro: Red Hat 8.5 - CPU: 10 x Intel Xeon (2400 MHz) - Processes: 405 - Uptime: 9d 18h 43m - Users: 2 - Load Average: 0.00 - Memory Usage: 3426/20054 MB (17%) - Disk Usage: 156/312 GB (50%)
