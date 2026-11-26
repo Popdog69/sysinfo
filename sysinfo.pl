@@ -358,13 +358,27 @@ if($showCPU) {
 		}
 	}
 	if($openbsd) {
-		@cpu		= grep(/cpu0: /, @dmesgboot);
-		@cpu		= grep(/[M|G]Hz/, @cpu);
-		$cpu		= join("\n", @cpu);
-		@cpu		= split(/: /, $cpu);
-		$cpu		= $cpu[1];
-		$cpu		=~ s/, / /;
-		$cpu		=~ s/([0-9.]* [MG]Hz)$/($1)/;
+		# Model line formats seen in dmesg:
+		#   cpu0: Intel(R) Xeon(R) Platinum 8259CL CPU @ 2.50GHz, 2500.01 MHz, 06-55-07
+		#   cpu0: Intel(R) Pentium(R) 4 CPU 2.40GHz ("GenuineIntel" 686-class) 2.40 GHz
+		# dmesg.boot can hold more than one boot, and other cpu0 lines mention
+		# MHz too (apic clock, SpeedStep), so only use the model line of the
+		# most recent boot instead of joining every match together.
+		@cpu		= grep(/^cpu0: .*[MG]Hz/, @dmesgboot);
+		@cpu		= grep(!/apic|SpeedStep|PowerNow|cache|TLB/i, @cpu);
+		$cpu		= @cpu ? $cpu[-1] : "";
+		$cpu		=~ s/^cpu0: //;
+		if($cpu =~ /^(.*?),\s+([0-9.]+)\s+MHz/) {
+			$cpu		= sprintf("%s (%.0f MHz)", $1, $2);
+		} else {
+			$cpu		=~ s/, / /;
+			$cpu		=~ s/([0-9.]* [MG]Hz)$/($1)/;
+		}
+		if($cpu eq "") {
+			# no usable dmesg line (e.g. arm64) - fall back to sysctl
+			$cpu		= `$sysctl -n hw.model`;
+			chomp($cpu);
+		}
 		$smp		= `$sysctl -n hw.ncpu`;
 		chomp($smp);
 		if ( $smp eq 1 ) {
